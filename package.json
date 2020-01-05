@@ -1,0 +1,25 @@
+{
+  "name": "x-dialog",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "start:dev": "nodemon --watch ./src src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d1y/x-Dialog.git"
+  },
+  "keywords": [
+    "dialog"
+  ],
+  "author": "d1y <chenhonzhou@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d1y/x-Dialog/issues"
+  },
+  "homepage": "https://github.com/d1y/x-Dialog#readme",
+  "devDependencies": {
+    "@types/node": "^13.1.4"
+  },
+  "description": ""
+}
