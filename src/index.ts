@@ -3,7 +3,7 @@
 ** 参考: 
 ** https://www.jianshu.com/p/d42dff738d70
 */
-import appleScript from './utils/applescript'
+import appleScript from './wm/macos'
 
 type Desktop =
   'kde' |

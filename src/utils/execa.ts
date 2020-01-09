@@ -1,5 +1,5 @@
 import * as child_process from 'child_process'
-import { ExecaConf } from './interface'
+import { ExecaConf } from '../interface'
 
 
 export default (conf: ExecaConf | string): string=> {

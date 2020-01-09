@@ -4,23 +4,30 @@
 ** https://hubpages.com/technology/applescript_code#
 */
 
-import execa from './execa'
-import { ExecaConf, NotificationInterface, DialogInterface, DialogButtonsInterface, DialogIconType, DialogInputInterface } from './interface'
+import execa from '../../utils/execa'
+import {
+  ExecaConf,
+  NotificationInterface,
+  DialogInterface,
+  DialogButtonsInterface,
+  DialogIconType,
+  DialogInputInterface
+} from '../../interface'
 import appleCmds, { exe_change } from './applecmds'
 
-const run = (script: string | Array<number | string>): any=> {
+const run = (script: string | Array<number | string>): any => {
   if (process.platform !== 'darwin') {
     throw new Error('macOS only')
-	}
+  }
   let cmd: string = ''
   if (Array.isArray(script)) {
-    (script as Array<any>).forEach((item: string)=> {
-      cmd += ` ${ item }`
+    (script as Array<any>).forEach((item: string) => {
+      cmd += ` ${item}`
     })
   } else cmd += script
   let cmds: Array<string | number> = []
   cmds.push('-e')
-  cmds.push(`\'${ cmd }\'`)
+  cmds.push(`\'${cmd}\'`)
   let result: ExecaConf = {
     exe: 'osascript',
     cmds
@@ -30,12 +37,12 @@ const run = (script: string | Array<number | string>): any=> {
 }
 
 // 获取当前ip(局域网)
-export const getIP = (): string=> {
-  const ip: string =  run(appleCmds.getIP)
+export const getIP = (): string => {
+  const ip: string = run(appleCmds.getIP)
   let temp: string[] = ip.split('.')
   // TODO 弱行判断ip格式是否正确
   if (temp.length >= 2) {
-    let flag = temp.every(item=> {
+    let flag = temp.every(item => {
       return !Number.isNaN(+item)
     })
     if (flag) return ip
@@ -44,7 +51,7 @@ export const getIP = (): string=> {
 }
 
 // 显示通知
-export const notification = (conf: NotificationInterface)=> {
+export const notification = (conf: NotificationInterface) => {
   let {
     content: CONTENT,
     title: TITLE,
@@ -60,7 +67,7 @@ export const notification = (conf: NotificationInterface)=> {
     SUB
   }
   const cmd = exe_change(option, text)
-  const data = run(cmd)
+  run(cmd)
 }
 
 // notification({
@@ -80,7 +87,7 @@ export const dialogDefaultButtons: DialogButtonsInterface[] = [
   }
 ]
 
-export const dialog = async (conf: DialogInterface)=> {
+export const dialog = async (conf: DialogInterface) => {
   let {
     type,
     icon,
@@ -97,18 +104,18 @@ export const dialog = async (conf: DialogInterface)=> {
   } else icon_str = ''
   buttons = buttons ? buttons : dialogDefaultButtons
   let buttons_temp: string = `BUTTONS`
-  let map: string[] | string = buttons.map(item=> {
+  let map: string[] | string = buttons.map(item => {
     return item['text']
   })
   map = JSON.stringify(map)
   // [fix] 转换个格式自动转换的`\`
   map = map.replace(/\\/g, '')
   map = map.replace('[', '{')
-  map = map.slice(0, map.length-1) + '}'
+  map = map.slice(0, map.length - 1) + '}'
   buttons_temp = buttons_temp.replace(`BUTTONS`, map)
   let str: string = appleCmds.dialog
   let temp_answer = placeholder ? placeholder : ''
-  let ANSWER = isInput ? `default answer "${ temp_answer }"` : ''
+  let ANSWER = isInput ? `default answer "${temp_answer}"` : ''
   const option = {
     "TITLE": title,
     "BUTTONS": buttons_temp,
@@ -124,9 +131,9 @@ export const dialog = async (conf: DialogInterface)=> {
     let index: number = -1
     let text = key[1]
     if (isInput) {
-      text = text.slice(0,text.indexOf(','))
+      text = text.slice(0, text.indexOf(','))
     }
-    buttons.filter((item, i)=> {
+    buttons.filter((item, i) => {
       if (item['text'] === text) {
         index = i
         return true
@@ -148,12 +155,12 @@ export const dialog = async (conf: DialogInterface)=> {
   } else return result
 }
 
-export const sayDialog = async (title: string)=> {
+export const sayDialog = async (title: string) => {
   const eye = await dialog({ title })
   return eye === 'ok'
 }
 
-export const sayInput = async (title: string)=> {
+export const sayInput = async (title: string) => {
   const eye = await dialog({
     title,
     type: 'input'
