@@ -1,8 +1,7 @@
-import * as child_process from 'child_process'
+import child_process from 'child_process'
 import { ExecaConf } from '../interface'
 
-
-export default (conf: ExecaConf | string): string=> {
+const execa = (conf: ExecaConf | string): string=> {
   let result: string = ''
   if (typeof conf != 'string') {
     let { exe, cmds } = (conf as ExecaConf)
@@ -21,3 +20,5 @@ export default (conf: ExecaConf | string): string=> {
     return ''
   }
 }
+
+export default execa

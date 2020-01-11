@@ -14,6 +14,9 @@ zenity --version
 
 # debian
 sudo apt install zenity
+
+# mac
+brew install zenity
 ```
 
 # Api
