@@ -1,12 +1,12 @@
 /*
 ** 参考: https://www.xuebuyuan.com/650003.html
+** 样式: https://stackoverflow.com/questions/18234920/control-the-size-of-the-content-in-a-zenity-window
 */
 
 import execa from "../../utils/execa"
 import { ExecaConf, zenityDialogInterface } from "../../interface"
 
-
-const zenityDialog = (conf: zenityDialogInterface) => {
+const zenityDialog = async (conf: zenityDialogInterface) => {
   let {
     type, 
     title,
@@ -15,10 +15,13 @@ const zenityDialog = (conf: zenityDialogInterface) => {
     height,
     time,
     placeholder,
-    inputType
+    inputType,
+    ok_text,
+    cancel_text
   } = conf
   title = title ? title : 'title'
   text = text ? text : 'text'
+  let Return: any = true
   const exe: ExecaConf = {
     exe: 'zenity',
     cmds: []
@@ -42,6 +45,17 @@ const zenityDialog = (conf: zenityDialogInterface) => {
     push('month', m)
     push('year', y)
   }
+
+  if (ok_text) push('ok-label', ok_text)
+  // -----
+  if (type == 'calendar' || type == 'entry' || type == 'question' || type == 'text-info') {
+    if (cancel_text) push('cancel-label', cancel_text)
+  }
+  // [fix] https://www.howtogeek.com/435020/how-to-add-a-gui-to-linux-shell-scripts
+  if (type == 'question') {
+    exe.cmds.push(`; echo $?`)
+  }
+  // -----
   if (type == 'entry' || type == 'text-info' ) {
     if (type == 'entry' && placeholder) {
       push('entry-text', placeholder)
@@ -54,16 +68,9 @@ const zenityDialog = (conf: zenityDialogInterface) => {
     }
   }
   const data = execa(exe)
-  // TODO
-  // let list = data.split('\n')
-  // if (list.length >= 2) return list[list.length-1]
-  return data
+  if (type == 'question') Return = !(+data)
+  Return = data
+  return Return
 }
 
-// const test = zenityDialog({
-//   type: 'entry',
-//   text: '你好世界',
-//   title: '不打工日记',
-//   inputType: 'password'
-// })
-// console.log('log: ', test);
+export default zenityDialog

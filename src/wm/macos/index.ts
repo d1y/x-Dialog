@@ -87,7 +87,7 @@ export const dialogDefaultButtons: DialogButtonsInterface[] = [
   }
 ]
 
-export const dialog = async (conf: DialogInterface) => {
+const dialog = async (conf: DialogInterface) => {
   let {
     type,
     icon,
@@ -172,4 +172,4 @@ export const sayInput = async (title: string) => {
 // const log = run(appleCmds.test)
 // console.log('log: ', log);
 
-export default run
+export default dialog

@@ -54,11 +54,11 @@ export interface DialogInterface {
 type zenityDialogType =
   'calendar' | // 显示日历对话框
   'entry' | // 显示文字输入栏对话框
-  'error' | // 显示错误信息对话框
-  'info' | // 显示信息对话框
+  'error' | // 显示错误信息对话框(ok)
+  'info' | // 显示信息对话框(ok)
   'question' | // 显示提问信息对话框
   'text-info' | // 显示文字资信对话框
-  'warning' // 显示警告信息对话框
+  'warning' // 显示警告信息对话框(ok)
 
 type zenityDialogInputType =
   'text' |
@@ -80,4 +80,19 @@ export interface zenityDialogInterface {
   placeholder?: string
   // 文本输入类型
   inputType?: zenityDialogInputType
+  // 确认文本
+  ok_text?: string
+  // 取消文本
+  cancel_text?: string
+}
+
+type windowDialogType =
+  'error' |
+  'info' |
+  'warning'
+
+export interface windowDialog {
+  type: windowDialogType
+  text: string
+  title: string
 }
